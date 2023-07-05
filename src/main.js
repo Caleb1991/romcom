@@ -1,4 +1,10 @@
 // Create variables targetting the relevant DOM elements here 👇
+let randomBookCover = getElement('.random-cover-button');
+let saveCoverButton = getElement('.save-cover-button')
+let viewSavedButton = getElement('.view-saved-button');
+let makeNewButton = getElement('.make-new-button');
+let homeButton = getElement('.home-button');
+let buttonArray = [viewSavedButton, makeNewButton, homeButton]
 
 // We've provided a few variables below
 let savedCovers = [
@@ -8,14 +14,57 @@ let currentCover;
 
 // Add your event listeners here 👇
 generateBook();
+addListenersForButtonClick(buttonArray);
 
-getElement('.random-cover-button').onclick = function() {
+randomBookCover.addEventListener('click', function() {
   generateBook();
-}
+});
 
 // Create your event handlers and other functions here 👇
 function getElement(className) {
   return document.querySelector(className);
+}
+
+function toggleButtons(clickedButton) {
+  if (homeButton.classList.value.includes('hidden')) {
+    homeButton.classList.toggle('hidden');
+    randomBookCover.classList.toggle('hidden');
+    saveCoverButton.classList.toggle('hidden');
+  } else if (clickedButton == 'home-button') {
+    homeButton.classList.toggle('hidden');
+    randomBookCover.classList.toggle('hidden');
+    saveCoverButton.classList.toggle('hidden');
+  }
+}
+
+function toggleView(clickedButton) {
+  let savedView = getElement('.saved-view');
+  let homeView = getElement('.home-view');
+  let formView = getElement('.form-view');
+  let viewArray = [savedView, homeView, formView]
+  
+  for (let view of viewArray) {
+    if (!view.classList.value.includes('hidden')) {
+      view.classList.toggle('hidden');
+    }
+  }
+
+  if (clickedButton === viewSavedButton) {
+    savedView.classList.toggle('hidden');
+  } else if (clickedButton == makeNewButton) {
+    formView.classList.toggle('hidden');
+  } else if (clickedButton == homeButton) {
+    homeView.classList.toggle('hidden');
+  }
+}
+
+function addListenersForButtonClick(array) {
+  for (let button of array) {
+    button.addEventListener('click', function () {
+      toggleButtons(this.className);
+      toggleView(this);
+    })
+  }
 }
 
 function generateBook(cover) {
