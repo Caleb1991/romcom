@@ -30,6 +30,14 @@ createNewBookButton.addEventListener('click', function() {
   toggleView(homeButton);
 })
 
+saveCoverButton.addEventListener('click', function() {
+  saveCover();
+})
+
+viewSavedButton.addEventListener('click', function() {
+  populateSavedCoversSection();
+})
+
 // Create your event handlers and other functions here 👇
 function getElement(className) {
   return document.querySelector(className);
@@ -105,6 +113,26 @@ function generateBook(cover) {
   coverTagline2.innerHTML = bookCover.tagline2;
 
   currentCover = bookCover
+}
+
+function saveCover() {
+  if (!savedCovers.includes(currentCover)) {
+    savedCovers.push(currentCover);
+  }
+}
+
+function populateSavedCoversSection() {
+  let savedCoversSection = getElement('.saved-covers-section');
+  savedCoversSection.innerHTML = '';
+  for (let cover of savedCovers) {
+    savedCoversSection.innerHTML += `<section class="mini-cover">
+                                      <img class="cover-image" src=${cover.coverImg}>
+                                      <h2 class="cover-title">${cover.title}</h2>
+                                      <h3 class="tagline">A tale of <span class="tagline-1">${cover.tagline1}</span> and <span class="tagline-2">${cover.tagline2}</span></h3>
+                                      <img class="price-tag" src="./assets/price.png">
+                                      <img class="overlay" src="./assets/overlay.png">
+                                    </section>`
+  }
 }
 
 // We've provided two functions to get you started
