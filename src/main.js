@@ -4,7 +4,8 @@ let saveCoverButton = getElement('.save-cover-button')
 let viewSavedButton = getElement('.view-saved-button');
 let makeNewButton = getElement('.make-new-button');
 let homeButton = getElement('.home-button');
-let buttonArray = [viewSavedButton, makeNewButton, homeButton]
+let createNewBookButton = getElement('.create-new-book-button');
+let buttonArray = [viewSavedButton, makeNewButton, homeButton];
 
 // We've provided a few variables below
 let savedCovers = [
@@ -19,6 +20,15 @@ addListenersForButtonClick(buttonArray);
 randomBookCover.addEventListener('click', function() {
   generateBook();
 });
+
+createNewBookButton.addEventListener('click', function() {
+  event.preventDefault();
+  let cover = captureFormInputs();
+  generateBook(cover);
+  saveToRespectiveArrays(currentCover);
+  toggleButtons(homeButton.className);
+  toggleView(homeButton);
+})
 
 // Create your event handlers and other functions here 👇
 function getElement(className) {
@@ -65,6 +75,21 @@ function addListenersForButtonClick(array) {
       toggleView(this);
     })
   }
+}
+
+function captureFormInputs() {
+  let imgSrc = getElement('.user-cover').value;
+  let title = getElement('.user-title').value;
+  let descriptor1 = getElement('.user-desc1').value;
+  let descriptor2 = getElement('.user-desc2').value;
+  return createCover(imgSrc, title, descriptor1, descriptor2);
+}
+
+function saveToRespectiveArrays(cover) {
+  covers.push(cover.imgSrc);
+  titles.push(cover.title);
+  descriptors.push(cover.tagline1);
+  descriptors.push(cover.tagline2);
 }
 
 function generateBook(cover) {
