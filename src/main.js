@@ -5,6 +5,7 @@ let viewSavedButton = getElement('.view-saved-button');
 let makeNewButton = getElement('.make-new-button');
 let homeButton = getElement('.home-button');
 let createNewBookButton = getElement('.create-new-book-button');
+let savedCoversSection = getElement('.saved-covers-section');
 let buttonArray = [viewSavedButton, makeNewButton, homeButton];
 
 // We've provided a few variables below
@@ -122,17 +123,39 @@ function saveCover() {
 }
 
 function populateSavedCoversSection() {
-  let savedCoversSection = getElement('.saved-covers-section');
   savedCoversSection.innerHTML = '';
+  i = 0
   for (let cover of savedCovers) {
-    savedCoversSection.innerHTML += `<section class="mini-cover">
+    savedCoversSection.innerHTML += `<section class="mini-cover" id="${i}">
                                       <img class="cover-image" src=${cover.coverImg}>
                                       <h2 class="cover-title">${cover.title}</h2>
                                       <h3 class="tagline">A tale of <span class="tagline-1">${cover.tagline1}</span> and <span class="tagline-2">${cover.tagline2}</span></h3>
                                       <img class="price-tag" src="./assets/price.png">
                                       <img class="overlay" src="./assets/overlay.png">
                                     </section>`
+    i++;
   }
+
+  addListenerToSavedCovers();
+}
+
+function addListenerToSavedCovers() {
+  for (let child of savedCoversSection.children) {
+    child.addEventListener('dblclick', function() {
+      deleteCover(this.id);
+      populateSavedCoversSection();
+    })
+  }
+}
+
+function deleteCover(id) {
+  let newCovers = []
+  for (let i = 0; i < savedCovers.length; i++) {
+    if (i != id) {
+      newCovers.push(savedCovers[i])
+    }
+  }
+  savedCovers = newCovers;
 }
 
 // We've provided two functions to get you started
